@@ -1,11 +1,16 @@
 <?php
+	   $bdhost = "localhost";
+	  $bdusuario = "root";
+	  $bdsenha = "";
+	  $baseDados = "olimpiadas2016";
 
-	$dbname = 'olimpiadas2016';
-	$dbserver = 'localhost';
-	$dbuser = 'root';
-	$dbpass = '';
-
-	$db = mysql_connect("$dbserver", "$dbuser", "$dbpass");
-	mysql_select_db("$dbname", $db) or die ("Conexão com o Banco de Dados não foi Possível no momento. Tente mais tarde!!");
+	  // Cria a conexão
+	  //mySQLi, ORIENTADA A OBJETOS
+	  $conn = new mysqli($bdhost, $bdusuario, $bdsenha, $baseDados);
+	  $conn->set_charset('utf8');
+	  // Verifica conexão
+	  if ($conn->connect_error) {
+	    die("Conexão ao MySQL falhou: " . $conn->connect_error);	
+	  }
 
 ?>

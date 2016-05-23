@@ -1,81 +1,52 @@
-<head>
-    <title>Ingressos</title>
-</head> 
-<body> 
-  
-   <form name="IngressosForm" method="post"> 
-       
-        <h2>Compre aqui os seus ingressos para os jogos</h2>
-        <br>
-        <div name="game_style">
-             <h3>Escolha o estilo dos jogos:</h3>
-             <input type="checkbox" value="olimpicos">
-            <img src="images/jogos_olimpicos.png" height="120" width="290">
-           <br>
-            <input type="checkbox" value= "paralimpicos">
-            <img src = "images/paralimpicos.png" height="120" width="290">
- 
-        </div>
-        <br>
-        
-        <div name="game_place">
-            <h3>Local dos jogos:</h3>
-            <select name="games_place">
-            <option value="1">Barra da Tijuca</option>
-            <option value="2">Copacabana</option>
-            <option value="3">Deodoro</option>
-            <option value="4">Maracanã</option>
-            <option value="5">Cidades do Futebol</option>
-            </select>
-            <br>
-        </div>
-          <br>
+<section class="container container-interno">
+   <div class="box first">  
+      <div class="center">
+         <h2 style="margin-bottom:0px;">Ingressos</h2>
+         <p class="lead">Garanta os seus ingressos para os jogos</p>
+      </div>
+      <div class="row"> 
+         <section class="col-lg-12 col-md-12 col-sm-12 text-center">
+               <a href="?pagina=ingressos" class="btn btn-primary">Todas </a>
+               <a href="?pagina=ingressos&idModalidade=1" class="btn btn-primary ">Ginástica Artítica </a>
+               <a href="?pagina=ingressos&idModalidade=2" class="btn btn-primary ">Futebol </a>
+               <a href="?pagina=ingressos&idModalidade=3" class="btn btn-primary ">Voleibol </a>
+               <a href="?pagina=ingressos&idModalidade=4" class="btn btn-primary ">Vôlei de Praia </a>
+         </section>
+      </div>
+      <div class="clearfix"></div>
+     <div class='row' style='margin-top:50px;'>
+      <?php
 
-       <hr size ="50">
-        <div name="sport">
-            <h3>Esportes: </h3>
-            <form action="">
-            <input type="checkbox" name="vehicle" value="sport">Cerimônia de Abertura<br>
-            <input type="checkbox" name="vehicle" value="sport">Cerimônia de Encerramento<br>
-            <input type="checkbox" name="vehicle" value="sport">Atletismo<br>
-            <input type="checkbox" name="vehicle" value="sport">Atletismo (Maratona)<br>
-            <input type="checkbox" name="vehicle" value="sport">Atletismo (Marcha atlética)<br>
-            <input type="checkbox" name="vehicle" value="sport">Badminton<br>
-            <input type="checkbox" name="vehicle" value="sport">Basquetebol<br>
-            <input type="checkbox" name="vehicle" value="sport">Boxe<br>
-            <input type="checkbox" name="vehicle" value="sport">Canoagem slalom<br>
-            <input type="checkbox" name="vehicle" value="sport">Canoagem velocidade<br>
-            <input type="checkbox" name="vehicle" value="sport">Ciclismo BMX<br>
-            <input type="checkbox" name="vehicle" value="sport">Ciclismo de estrada<br>
-            <input type="checkbox" name="vehicle" value="sport">Ciclismo de pista<br>
-            <input type="checkbox" name="vehicle" value="sport">Ciclismo mountain bike<br>
-            <input type="checkbox" name="vehicle" value="sport">Esgrima<br>
-            <input type="checkbox" name="vehicle" value="sport">Futebol<br>
-            <input type="checkbox" name="vehicle" value="sport">Ginástica artística<br>
-            <input type="checkbox" name="vehicle" value="sport">Ginástica de trampolim<br>
-            <input type="checkbox" name="vehicle" value="sport">Ginástica Gala<br>
-                
-            </form>
-        </div>
-        <br>
-        <div name="payment">
-            <h3>Forma de pagamento: </h3>
-            <select name="pay">
-            <option value="1">Crédito</option>
-            <option value="2">Debito</option>
-            <option value="3">Boleto bancário</option>
-            <option value="4">PayPal</option>
-            <option value="5">Voucher</option>
-            </select>
-            
-        </div>
-        
-    </form> 
-    <br>
-    <label> 
-          <input type="button" value="Comprar" /> 
-    </label>  
-   
+      if(isset($_GET['idModalidade']))
+      {
+         $idModalidade = $_GET['idModalidade'];
+         $sql = "select * from eventos where idModalidade = $idModalidade order by datahora";
+      }
+      else
+      {
+         $sql = "select * from eventos order by datahora";
+      }
 
-   
-</body> 
+       $result = $conn->query($sql);
+       if ($result->num_rows >0){
+
+          while($row = $result->fetch_assoc()){
+
+                  echo "<div class='col-md-3 col-lg-3 col-sm-12'>";
+                     echo "<span>". $row['nome'] . "</span>";
+                     echo "<br> ". $row['descricao'];
+                     echo "<br> ". $row['local'];
+                     echo "<br>". date('d/m/Y H:i', strtotime($row['datahora']));
+
+                     if(isset($_SESSION['id'])){
+                        echo"<a style='margin-top:20px;' class='btn btn-warning btn-block' href='?pagina=compraingresso&id=".$row['idEvento']."'>Comprar</a></div>";    
+                     }
+                     else{
+                        echo"<a style='margin-top:20px;' class='btn btn-warning btn-block' href='?pagina=login'>Comprar</a></div>"; 
+                     }                      
+              }
+       }
+      ?>
+       </div>
+   </div>
+</section>
